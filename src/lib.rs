@@ -1657,10 +1657,7 @@ r#"digraph utf8_diagram {
     #[test]
     fn simple_id_construction() {
         let id1 = Id::new("hello");
-        match id1 {
-            Ok(_) => {}
-            Err(..) => panic!("'hello' is not a valid value for id anymore"),
-        }
+        assert!(id1.is_ok(), "'hello' is not a valid value for id anymore"),
     }
 
     #[test]
@@ -1712,7 +1709,7 @@ r#"digraph utf8_diagram {
     #[test]
     fn badly_formatted_id() {
         let id2 = Id::new("Weird { struct : ure } !!!");
-        if id2.is_ok() { panic!("graphviz id suddenly allows spaces, brackets and stuff") }
+        assert!(id2.is_ok(), "graphviz id suddenly allows spaces, brackets and stuff");
     }
 
     type SimpleEdge = (Node, Node);
