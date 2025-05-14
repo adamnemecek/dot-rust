@@ -1386,7 +1386,7 @@ mod tests {
         }
         fn node_color(&'a self, n: &Node) -> Option<LabelText<'a>> {
             match self.graph.node_color(n) {
-                Some(LabelStr(s)) | Some(EscStr(s)) | Some(HtmlStr(s)) => Some(EscStr(s)),
+                Some(LabelStr(s) | EscStr(s) | HtmlStr(s)) => Some(EscStr(s)),
                 None => None,
             }
         }
@@ -1397,7 +1397,7 @@ mod tests {
         }
         fn edge_color(&'a self, e: &&'a Edge) -> Option<LabelText<'a>> {
             match self.graph.edge_color(e) {
-                Some(LabelStr(s)) | Some(EscStr(s)) | Some(HtmlStr(s)) => Some(EscStr(s)),
+                Some(LabelStr(s) | EscStr(s) | HtmlStr(s)) => Some(EscStr(s)),
                 None => None,
             }
         }
