@@ -1718,7 +1718,7 @@ mod tests {
     fn badly_formatted_id() {
         let id2 = Id::new("Weird { struct : ure } !!!");
         assert!(
-            id2.is_ok(),
+            id2.is_err(),
             "graphviz id suddenly allows spaces, brackets and stuff"
         );
     }
