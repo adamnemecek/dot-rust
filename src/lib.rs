@@ -272,10 +272,10 @@
 use self::LabelText::*;
 
 use std::borrow::Cow;
-use std::io;
-use std::str;
 use std::collections::HashMap;
+use std::io;
 use std::io::Write;
+use std::str;
 
 /// The text for a graphviz label on a node or edge.
 pub enum LabelText<'a> {
@@ -552,8 +552,8 @@ pub trait Labeller<'a, N, E> {
 
     /// Specify a subpart of the source node for the origin of the edge (portname) and a
     /// direction for the edge (compass_point). See also
-    /// https://graphviz.org/docs/attr-types/portPos/. 
-    /// 
+    /// https://graphviz.org/docs/attr-types/portPos/.
+    ///
     /// For the portname to take effect the node shape must be `record`. See
     /// also https://graphviz.org/doc/info/shapes.html#record
     fn source_port_position(&'a self, _e: &E) -> (Option<Id<'a>>, Option<CompassPoint>) {
@@ -579,7 +579,7 @@ pub enum CompassPoint {
     W,
     NW,
     C,
-    Underscore
+    Underscore,
 }
 
 impl CompassPoint {
@@ -1094,7 +1094,11 @@ pub fn render_opts<
             text.push("]");
         }
 
-        let node_attrs = g.node_attrs(n).iter().map(|(name, value)| format!("[{name}={value}]")).collect::<Vec<String>>();
+        let node_attrs = g
+            .node_attrs(n)
+            .iter()
+            .map(|(name, value)| format!("[{name}={value}]"))
+            .collect::<Vec<String>>();
         text.extend(node_attrs.iter().map(|s| s as &str));
 
         text.push(";");
@@ -1116,7 +1120,7 @@ pub fn render_opts<
         let target_id = g.node_id(&target);
 
         let mut text = vec![source_id.as_slice()];
-        
+
         let (source_port, source_direction) = g.source_port_position(e);
         if let Some(ref refinement) = source_port {
             text.push(":");
@@ -1126,8 +1130,7 @@ pub fn render_opts<
             text.push(":");
             text.push(dir.as_str());
         }
-        text.extend(&[" ", g.kind().edgeop(), " ",
-                            target_id.as_slice()]);
+        text.extend(&[" ", g.kind().edgeop(), " ", target_id.as_slice()]);
         let (target_port, target_direction) = g.target_port_position(e);
         if let Some(ref refinement) = target_port {
             text.push(":");
@@ -1178,7 +1181,11 @@ pub fn render_opts<
 
             text.push("]");
         }
-        let edge_attrs = g.edge_attrs(e).iter().map(|(name, value)| format!("[{name}={value}]")).collect::<Vec<String>>();
+        let edge_attrs = g
+            .edge_attrs(e)
+            .iter()
+            .map(|(name, value)| format!("[{name}={value}]"))
+            .collect::<Vec<String>>();
         text.extend(edge_attrs.iter().map(|s| s as &str));
         text.push(";");
         writeln(w, &text)?;
@@ -1319,11 +1326,7 @@ mod tests {
     }
 
     impl LabelledGraphWithEscStrs {
-        fn new(
-            name: &'static str,
-            node_labels: Trivial,
-            edges: Vec<Edge>,
-        ) -> Self {
+        fn new(name: &'static str, node_labels: Trivial, edges: Vec<Edge>) -> Self {
             Self {
                 graph: LabelledGraph::new(name, node_labels, edges, None),
             }
@@ -1592,18 +1595,22 @@ mod tests {
 
     #[test]
     fn utf8_diagram() {
-        let labels = AllNodesLabelled(vec!("Λ", "ι"));
-        let r = test_input(LabelledGraph::new("utf8_diagram",
-                                              labels,
-                                              vec![edge(0, 1, "☕", Style::None, None)],
-                                              None));
-        assert_eq!(r.unwrap(),
-r#"digraph utf8_diagram {
+        let labels = AllNodesLabelled(vec!["Λ", "ι"]);
+        let r = test_input(LabelledGraph::new(
+            "utf8_diagram",
+            labels,
+            vec![edge(0, 1, "☕", Style::None, None)],
+            None,
+        ));
+        assert_eq!(
+            r.unwrap(),
+            r#"digraph utf8_diagram {
     N0[label="Λ"];
     N1[label="ι"];
     N0 -> N1[label="☕"];
 }
-"#);
+"#
+        );
     }
 
     #[test]
@@ -1657,7 +1664,7 @@ r#"digraph utf8_diagram {
     #[test]
     fn simple_id_construction() {
         let id1 = Id::new("hello");
-        assert!(id1.is_ok(), "'hello' is not a valid value for id anymore"),
+        assert!(id1.is_ok(), "'hello' is not a valid value for id anymore");
     }
 
     #[test]
@@ -1709,7 +1716,10 @@ r#"digraph utf8_diagram {
     #[test]
     fn badly_formatted_id() {
         let id2 = Id::new("Weird { struct : ure } !!!");
-        assert!(id2.is_ok(), "graphviz id suddenly allows spaces, brackets and stuff");
+        assert!(
+            id2.is_ok(),
+            "graphviz id suddenly allows spaces, brackets and stuff"
+        );
     }
 
     type SimpleEdge = (Node, Node);
@@ -1724,12 +1734,7 @@ r#"digraph utf8_diagram {
     }
 
     impl DefaultStyleGraph {
-        fn new(
-            name: &'static str,
-            nodes: usize,
-            edges: Vec<SimpleEdge>,
-            kind: Kind,
-        ) -> Self {
+        fn new(name: &'static str, nodes: usize, edges: Vec<SimpleEdge>, kind: Kind) -> Self {
             assert!(!name.is_empty());
             Self {
                 name,
