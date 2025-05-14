@@ -895,7 +895,7 @@ impl ArrowShape {
     /// Function which renders given ArrowShape into a String for displaying.
     pub fn to_dot_string(&self) -> String {
         let mut res = String::new();
-        match *self {
+        match self {
             Box(fill, side)
             | ICurve(fill, side)
             | Diamond(fill, side)
@@ -946,7 +946,7 @@ impl Kind {
     /// The keyword to use to introduce the graph.
     /// Determines which edge syntax must be used, and default style.
     fn keyword(&self) -> &'static str {
-        match *self {
+        match self {
             Self::Digraph => "digraph",
             Self::Graph => "graph",
         }
@@ -954,7 +954,7 @@ impl Kind {
 
     /// The edgeop syntax to use for this graph kind.
     fn edgeop(&self) -> &'static str {
-        match *self {
+        match self {
             Self::Digraph => "->",
             Self::Graph => "--",
         }
