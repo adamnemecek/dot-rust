@@ -835,6 +835,7 @@ pub enum ArrowShape {
     /// Arrow ending with a V shaped arrow.
     Vee(Side),
 }
+
 impl ArrowShape {
     /// Constructor which returns no arrow.
     pub fn none() -> Self {
@@ -913,19 +914,19 @@ impl ArrowShape {
             },
             NoArrow => {}
         };
-        match *self {
-            NoArrow => res.push_str("none"),
-            Normal(_, _) => res.push_str("normal"),
-            Box(_, _) => res.push_str("box"),
-            Crow(_) => res.push_str("crow"),
-            Curve(_) => res.push_str("curve"),
-            ICurve(_, _) => res.push_str("icurve"),
-            Diamond(_, _) => res.push_str("diamond"),
-            Dot(_) => res.push_str("dot"),
-            Inv(_, _) => res.push_str("inv"),
-            Tee(_) => res.push_str("tee"),
-            Vee(_) => res.push_str("vee"),
-        };
+        res.push_str(match self {
+            NoArrow => "none",
+            Normal(_, _) => "normal",
+            Box(_, _) => "box",
+            Crow(_) => "crow",
+            Curve(_) => "curve",
+            ICurve(_, _) => "icurve",
+            Diamond(_, _) => "diamond",
+            Dot(_) => "dot",
+            Inv(_, _) => "inv",
+            Tee(_) => "tee",
+            Vee(_) => "vee",
+        });
         res
     }
 }
