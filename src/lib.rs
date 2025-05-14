@@ -902,16 +902,16 @@ impl ArrowShape {
             | Inv(fill, side)
             | Normal(fill, side) => {
                 res.push_str(fill.as_str());
-                match side {
-                    Side::Left | Side::Right => res.push_str(side.as_str()),
-                    Side::Both => {}
-                };
+                if matches!(side, Side::Left | Side::Right) {
+                    res.push_str(side.as_str());
+                }
             }
             Dot(fill) => res.push_str(fill.as_str()),
-            Crow(side) | Curve(side) | Tee(side) | Vee(side) => match side {
-                Side::Left | Side::Right => res.push_str(side.as_str()),
-                Side::Both => {}
-            },
+            Crow(side) | Curve(side) | Tee(side) | Vee(side) => {
+                if matches!(side, Side::Left | Side::Right) {
+                    res.push_str(side.as_str());
+                }
+            }
             NoArrow => {}
         };
         res.push_str(match self {
