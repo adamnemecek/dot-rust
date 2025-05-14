@@ -323,7 +323,7 @@ pub enum Style {
 }
 
 impl Style {
-    pub fn as_slice(self) -> &'static str {
+    pub fn as_str(self) -> &'static str {
         match self {
             Self::None => "",
             Self::Solid => "solid",
@@ -350,7 +350,7 @@ pub enum RankDir {
 }
 
 impl RankDir {
-    pub fn as_slice(self) -> &'static str {
+    pub fn as_str(self) -> &'static str {
         match self {
             Self::TopBottom => "TB",
             Self::LeftRight => "LR",
@@ -434,7 +434,7 @@ impl<'a> Id<'a> {
         }
     }
 
-    pub fn as_slice(&'a self) -> &'a str {
+    pub fn as_str(&'a self) -> &'a str {
         &self.name
     }
 
@@ -780,7 +780,7 @@ pub enum Fill {
 }
 
 impl Fill {
-    pub fn as_slice(self) -> &'static str {
+    pub fn as_str(self) -> &'static str {
         match self {
             Self::Open => "o",
             Self::Filled => "",
@@ -798,7 +798,7 @@ pub enum Side {
 }
 
 impl Side {
-    pub fn as_slice(self) -> &'static str {
+    pub fn as_str(self) -> &'static str {
         match self {
             Self::Left => "l",
             Self::Right => "r",
@@ -901,15 +901,15 @@ impl ArrowShape {
             | Diamond(fill, side)
             | Inv(fill, side)
             | Normal(fill, side) => {
-                res.push_str(fill.as_slice());
+                res.push_str(fill.as_str());
                 match side {
-                    Side::Left | Side::Right => res.push_str(side.as_slice()),
+                    Side::Left | Side::Right => res.push_str(side.as_str()),
                     Side::Both => {}
                 };
             }
-            Dot(fill) => res.push_str(fill.as_slice()),
+            Dot(fill) => res.push_str(fill.as_str()),
             Crow(side) | Curve(side) | Tee(side) | Vee(side) => match side {
-                Side::Left | Side::Right => res.push_str(side.as_slice()),
+                Side::Left | Side::Right => res.push_str(side.as_str()),
                 Side::Both => {}
             },
             NoArrow => {}
@@ -1043,11 +1043,11 @@ pub fn render_opts<
         w.write_all(b"    ")
     }
 
-    writeln(w, &[g.kind().keyword(), " ", g.graph_id().as_slice(), " {"])?;
+    writeln(w, &[g.kind().keyword(), " ", g.graph_id().as_str(), " {"])?;
     if g.kind() == Kind::Digraph {
         if let Some(rankdir) = g.rank_dir() {
             indent(w)?;
-            writeln(w, &["rankdir=\"", rankdir.as_slice(), "\";"])?;
+            writeln(w, &["rankdir=\"", rankdir.as_str(), "\";"])?;
         }
     }
 
@@ -1063,7 +1063,7 @@ pub fn render_opts<
         let escaped = &g.node_label(n).to_dot_string();
         let shape;
 
-        let mut text = vec![id.as_slice()];
+        let mut text = vec![id.as_str()];
 
         if !options.contains(&RenderOption::NoNodeLabels) {
             text.push("[label=");
@@ -1074,7 +1074,7 @@ pub fn render_opts<
         let style = g.node_style(n);
         if !options.contains(&RenderOption::NoNodeStyles) && style != Style::None {
             text.push("[style=\"");
-            text.push(style.as_slice());
+            text.push(style.as_str());
             text.push("\"]");
         }
 
@@ -1120,22 +1120,22 @@ pub fn render_opts<
         let source_id = g.node_id(&source);
         let target_id = g.node_id(&target);
 
-        let mut text = vec![source_id.as_slice()];
+        let mut text = vec![source_id.as_str()];
 
         let (source_port, source_direction) = g.source_port_position(e);
         if let Some(ref refinement) = source_port {
             text.push(":");
-            text.push(refinement.as_slice());
+            text.push(refinement.as_str());
         }
         if let Some(dir) = source_direction {
             text.push(":");
             text.push(dir.as_str());
         }
-        text.extend(&[" ", g.kind().edgeop(), " ", target_id.as_slice()]);
+        text.extend(&[" ", g.kind().edgeop(), " ", target_id.as_str()]);
         let (target_port, target_direction) = g.target_port_position(e);
         if let Some(ref refinement) = target_port {
             text.push(":");
-            text.push(refinement.as_slice());
+            text.push(refinement.as_str());
         }
         if let Some(dir) = target_direction {
             text.push(":");
@@ -1151,7 +1151,7 @@ pub fn render_opts<
         let style = g.edge_style(e);
         if !options.contains(&RenderOption::NoEdgeStyles) && style != Style::None {
             text.push("[style=\"");
-            text.push(style.as_slice());
+            text.push(style.as_str());
             text.push("\"]");
         }
 
