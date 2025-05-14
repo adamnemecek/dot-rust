@@ -325,16 +325,16 @@ pub enum Style {
 impl Style {
     pub fn as_slice(self) -> &'static str {
         match self {
-            Style::None => "",
-            Style::Solid => "solid",
-            Style::Dashed => "dashed",
-            Style::Dotted => "dotted",
-            Style::Bold => "bold",
-            Style::Rounded => "rounded",
-            Style::Diagonals => "diagonals",
-            Style::Filled => "filled",
-            Style::Striped => "striped",
-            Style::Wedged => "wedged",
+            Self::None => "",
+            Self::Solid => "solid",
+            Self::Dashed => "dashed",
+            Self::Dotted => "dotted",
+            Self::Bold => "bold",
+            Self::Rounded => "rounded",
+            Self::Diagonals => "diagonals",
+            Self::Filled => "filled",
+            Self::Striped => "striped",
+            Self::Wedged => "wedged",
         }
     }
 }
@@ -352,10 +352,10 @@ pub enum RankDir {
 impl RankDir {
     pub fn as_slice(self) -> &'static str {
         match self {
-            RankDir::TopBottom => "TB",
-            RankDir::LeftRight => "LR",
-            RankDir::BottomTop => "BT",
-            RankDir::RightLeft => "RL",
+            Self::TopBottom => "TB",
+            Self::LeftRight => "LR",
+            Self::BottomTop => "BT",
+            Self::RightLeft => "RL",
         }
     }
 }
@@ -412,7 +412,7 @@ impl<'a> Id<'a> {
     ///
     /// Passing an invalid string (containing spaces, brackets,
     /// quotes, ...) will return an empty `Err` value.
-    pub fn new<Name: Into<Cow<'a, str>>>(name: Name) -> Result<Id<'a>, &'static str> {
+    pub fn new<Name: Into<Cow<'a, str>>>(name: Name) -> Result<Self, &'static str> {
         let name = name.into();
         {
             let mut chars = name.chars();
@@ -610,15 +610,15 @@ pub fn escape_html(s: &str) -> String {
 }
 
 impl<'a> LabelText<'a> {
-    pub fn label<S: Into<Cow<'a, str>>>(s: S) -> LabelText<'a> {
+    pub fn label<S: Into<Cow<'a, str>>>(s: S) -> Self {
         LabelStr(s.into())
     }
 
-    pub fn escaped<S: Into<Cow<'a, str>>>(s: S) -> LabelText<'a> {
+    pub fn escaped<S: Into<Cow<'a, str>>>(s: S) -> Self {
         EscStr(s.into())
     }
 
-    pub fn html<S: Into<Cow<'a, str>>>(s: S) -> LabelText<'a> {
+    pub fn html<S: Into<Cow<'a, str>>>(s: S) -> Self {
         HtmlStr(s.into())
     }
 
@@ -720,22 +720,22 @@ impl Arrow {
     }
 
     /// Arrow constructor which returns an empty arrow
-    pub fn none() -> Arrow {
-        Arrow {
+    pub fn none() -> Self {
+        Self {
             arrows: vec![NoArrow],
         }
     }
 
     /// Arrow constructor which returns a regular triangle arrow, without modifiers
-    pub fn normal() -> Arrow {
-        Arrow {
+    pub fn normal() -> Self {
+        Self {
             arrows: vec![ArrowShape::normal()],
         }
     }
 
     /// Arrow constructor which returns an arrow created by a given ArrowShape.
-    pub fn from_arrow(arrow: ArrowShape) -> Arrow {
-        Arrow {
+    pub fn from_arrow(arrow: ArrowShape) -> Self {
+        Self {
             arrows: vec![arrow],
         }
     }
@@ -752,21 +752,21 @@ impl Arrow {
 
 impl From<[ArrowShape; 2]> for Arrow {
     fn from(val: [ArrowShape; 2]) -> Self {
-        Arrow {
+        Self {
             arrows: vec![val[0], val[1]],
         }
     }
 }
 impl From<[ArrowShape; 3]> for Arrow {
     fn from(val: [ArrowShape; 3]) -> Self {
-        Arrow {
+        Self {
             arrows: vec![val[0], val[1], val[2]],
         }
     }
 }
 impl From<[ArrowShape; 4]> for Arrow {
     fn from(val: [ArrowShape; 4]) -> Self {
-        Arrow {
+        Self {
             arrows: vec![val[0], val[1], val[2], val[3]],
         }
     }
@@ -782,8 +782,8 @@ pub enum Fill {
 impl Fill {
     pub fn as_slice(self) -> &'static str {
         match self {
-            Fill::Open => "o",
-            Fill::Filled => "",
+            Self::Open => "o",
+            Self::Filled => "",
         }
     }
 }
@@ -800,9 +800,9 @@ pub enum Side {
 impl Side {
     pub fn as_slice(self) -> &'static str {
         match self {
-            Side::Left => "l",
-            Side::Right => "r",
-            Side::Both => "",
+            Self::Left => "l",
+            Self::Right => "r",
+            Self::Both => "",
         }
     }
 }
@@ -837,57 +837,57 @@ pub enum ArrowShape {
 }
 impl ArrowShape {
     /// Constructor which returns no arrow.
-    pub fn none() -> ArrowShape {
+    pub fn none() -> Self {
         NoArrow
     }
 
     /// Constructor which returns normal arrow.
-    pub fn normal() -> ArrowShape {
+    pub fn normal() -> Self {
         Normal(Fill::Filled, Side::Both)
     }
 
     /// Constructor which returns a regular box arrow.
-    pub fn boxed() -> ArrowShape {
+    pub fn boxed() -> Self {
         Box(Fill::Filled, Side::Both)
     }
 
     /// Constructor which returns a regular crow arrow.
-    pub fn crow() -> ArrowShape {
+    pub fn crow() -> Self {
         Crow(Side::Both)
     }
 
     /// Constructor which returns a regular curve arrow.
-    pub fn curve() -> ArrowShape {
+    pub fn curve() -> Self {
         Curve(Side::Both)
     }
 
     /// Constructor which returns an inverted curve arrow.
-    pub fn icurve() -> ArrowShape {
+    pub fn icurve() -> Self {
         ICurve(Fill::Filled, Side::Both)
     }
 
     /// Constructor which returns a diamond arrow.
-    pub fn diamond() -> ArrowShape {
+    pub fn diamond() -> Self {
         Diamond(Fill::Filled, Side::Both)
     }
 
     /// Constructor which returns a circle shaped arrow.
-    pub fn dot() -> ArrowShape {
+    pub fn dot() -> Self {
         Diamond(Fill::Filled, Side::Both)
     }
 
     /// Constructor which returns an inverted triangle arrow.
-    pub fn inv() -> ArrowShape {
+    pub fn inv() -> Self {
         Inv(Fill::Filled, Side::Both)
     }
 
     /// Constructor which returns a T shaped arrow.
-    pub fn tee() -> ArrowShape {
+    pub fn tee() -> Self {
         Tee(Side::Both)
     }
 
     /// Constructor which returns a V shaped arrow.
-    pub fn vee() -> ArrowShape {
+    pub fn vee() -> Self {
         Vee(Side::Both)
     }
 
@@ -946,16 +946,16 @@ impl Kind {
     /// Determines which edge syntax must be used, and default style.
     fn keyword(&self) -> &'static str {
         match *self {
-            Kind::Digraph => "digraph",
-            Kind::Graph => "graph",
+            Self::Digraph => "digraph",
+            Self::Graph => "graph",
         }
     }
 
     /// The edgeop syntax to use for this graph kind.
     fn edgeop(&self) -> &'static str {
         match *self {
-            Kind::Digraph => "->",
-            Kind::Graph => "--",
+            Self::Digraph => "->",
+            Self::Graph => "--",
         }
     }
 }
@@ -1117,7 +1117,7 @@ pub fn render_opts<
 
         let mut text = vec![source_id.as_slice()];
         
-        let (source_port, source_direction) = g.source_port_position(&e);
+        let (source_port, source_direction) = g.source_port_position(e);
         if let Some(ref refinement) = source_port {
             text.push(":");
             text.push(refinement.as_slice());
@@ -1128,7 +1128,7 @@ pub fn render_opts<
         }
         text.extend(&[" ", g.kind().edgeop(), " ",
                             target_id.as_slice()]);
-        let (target_port, target_direction) = g.target_port_position(&e);
+        let (target_port, target_direction) = g.target_port_position(e);
         if let Some(ref refinement) = target_port {
             text.push(":");
             text.push(refinement.as_slice());
@@ -1292,8 +1292,8 @@ mod tests {
         fn len(&self) -> usize {
             match self {
                 &UnlabelledNodes(len) => len,
-                &AllNodesLabelled(ref lbls) => lbls.len(),
-                &SomeNodesLabelled(ref lbls) => lbls.len(),
+                AllNodesLabelled(lbls) => lbls.len(),
+                SomeNodesLabelled(lbls) => lbls.len(),
             }
         }
     }
@@ -1304,9 +1304,9 @@ mod tests {
             node_labels: Trivial,
             edges: Vec<Edge>,
             node_styles: Option<Vec<Style>>,
-        ) -> LabelledGraph {
+        ) -> Self {
             let count = node_labels.len();
-            LabelledGraph {
+            Self {
                 name,
                 node_labels: node_labels.into_opt_strs(),
                 edges,
@@ -1323,8 +1323,8 @@ mod tests {
             name: &'static str,
             node_labels: Trivial,
             edges: Vec<Edge>,
-        ) -> LabelledGraphWithEscStrs {
-            LabelledGraphWithEscStrs {
+        ) -> Self {
+            Self {
                 graph: LabelledGraph::new(name, node_labels, edges, None),
             }
         }
@@ -1712,10 +1712,7 @@ r#"digraph utf8_diagram {
     #[test]
     fn badly_formatted_id() {
         let id2 = Id::new("Weird { struct : ure } !!!");
-        match id2 {
-            Ok(_) => panic!("graphviz id suddenly allows spaces, brackets and stuff"),
-            Err(..) => {}
-        }
+        if id2.is_ok() { panic!("graphviz id suddenly allows spaces, brackets and stuff") }
     }
 
     type SimpleEdge = (Node, Node);
@@ -1735,9 +1732,9 @@ r#"digraph utf8_diagram {
             nodes: usize,
             edges: Vec<SimpleEdge>,
             kind: Kind,
-        ) -> DefaultStyleGraph {
+        ) -> Self {
             assert!(!name.is_empty());
-            DefaultStyleGraph {
+            Self {
                 name,
                 nodes,
                 edges,
